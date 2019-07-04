@@ -71,20 +71,13 @@ public class ScreenDialog extends JFrame {
             	else {
 	            	pressed.add(e.getKeyCode());
 	            	
-	            	 if (isPressedMoreThanOneKeySimultaneously()) {
-	            		 System.out.println(pressed);
-	            		 if(isPressedKeysFitToShortcut())
-	            			 nextTask();
-	                 }
+	            	if(isPressedKeysFitToShortcut())
+	            		nextTask();
             	}
             }
 
 			private boolean isPressedKeysFitToShortcut() {
 				return pressed.containsAll(searchedKeys);
-			}
-
-			private boolean isPressedMoreThanOneKeySimultaneously() {
-				return pressed.size() > 1;
 			}
 
 			private boolean isPressedRightArrow(KeyEvent e) {
