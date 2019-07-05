@@ -1,6 +1,5 @@
 package view;
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
@@ -15,30 +14,28 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.border.LineBorder;
 
 import main.Task;
 import main.TaskFactory;
 
 public class ScreenDialog extends JFrame {
 
-	private static final LineBorder BORDER = new LineBorder(Color.BLACK,2);
 	private TaskFactory taskCreator;
 	private String currentShortcut;
 	private Set<Integer> searchedKeys;
 	private String description;
+	private final Set<Integer> pressedKeys = new HashSet<>();
 
-	private JLabel resultLabel;
 	private JButton checkButt;
 	private JButton nextButt;
 	private ImageIcon imageBefore;
 	private ImageIcon imageAfter;
 	private JLabel labelBefore;
 	private JLabel labelAfter;
-	private JLabel labelDescription;
-	private final Set<Integer> pressed = new HashSet<>();
-	private static final long serialVersionUID = 1L;
+	private JLabel labelTaskDescription;
 	private JLabel betweenScreenLabel;
+	private JLabel resultLabel;
+	private static final long serialVersionUID = 1L;
 	
 	public ScreenDialog(TaskFactory taskCreator){
 		this.taskCreator = taskCreator;
@@ -67,7 +64,7 @@ public class ScreenDialog extends JFrame {
 	}
 
 	private void initFrame() {
-		this.setTitle("Test");
+		this.setTitle("Shortcuts learning platform");
 		this.setSize(1000, 400);
 		this.setLocationRelativeTo(null);
 		this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -82,7 +79,7 @@ public class ScreenDialog extends JFrame {
             	else if(isPressedRightArrow(e))
             		nextTask();
             	else {
-	            	pressed.add(e.getKeyCode());
+	            	pressedKeys.add(e.getKeyCode());
 	            	
 	            	if(isPressedKeysFitToShortcut())
 	            		nextTask();
@@ -90,7 +87,7 @@ public class ScreenDialog extends JFrame {
             }
 
 			private boolean isPressedKeysFitToShortcut() {
-				return pressed.containsAll(searchedKeys);
+				return pressedKeys.containsAll(searchedKeys);
 			}
 
 			private boolean isPressedRightArrow(KeyEvent e) {
@@ -106,7 +103,7 @@ public class ScreenDialog extends JFrame {
 
 			@Override
             public void keyReleased(KeyEvent e) {
-            	 pressed.remove(e.getKeyCode());
+            	 pressedKeys.remove(e.getKeyCode());
             }
 		});
 	}
@@ -119,15 +116,13 @@ public class ScreenDialog extends JFrame {
 	
 	private void initDescriptionPanel() {
 		JPanel panel = new JPanel();
-		labelDescription = new JLabel(description, JLabel.CENTER);
-		panel.add(labelDescription, BorderLayout.NORTH);
+		labelTaskDescription = new JLabel(description, JLabel.CENTER);
+		panel.add(labelTaskDescription, BorderLayout.NORTH);
 		this.add(panel, BorderLayout.NORTH);
 	}
 	
 	private void initScreenPanel() {
 		JPanel panelJPG = new JPanel();
-//		panelJPG.setBorder(BORDER);
-		
 		labelBefore = new JLabel(imageBefore, JLabel.CENTER);
 		betweenScreenLabel = new JLabel("  =>  ");
 		labelAfter = new JLabel("", imageAfter, JLabel.CENTER);
@@ -149,8 +144,6 @@ public class ScreenDialog extends JFrame {
 		infoPanel.add(labelDescription);
 		
 		JPanel buttonsPanel = new JPanel();
-//		panel.setBorder(BORDER);
-
 		checkButt = new JButton("Check");
 		checkButt.addActionListener(this::checkAction);
 		
@@ -161,7 +154,6 @@ public class ScreenDialog extends JFrame {
 		buttonsPanel.add(nextButt);
 		
 		JPanel resultPanel = new JPanel();
-//		panel2.setBorder(BORDER);
 		resultLabel = new JLabel();
 		resultLabel.setFont(resultLabel.getFont().deriveFont(20f));
 		resultPanel.add(resultLabel, BorderLayout.SOUTH);
@@ -188,15 +180,14 @@ public class ScreenDialog extends JFrame {
 
 	private void nextTask() {
 		loadTask();
-		labelDescription.setText(description);
+		labelTaskDescription.setText(description);
 		labelBefore.setIcon(imageBefore);
+		resultLabel.setText("");
 		
 		if(isTwoScreensToOneTask())
 			setFieldsForTwoScreenTask();
 		else
 			setFieldsForOneScreenTask();
-		
-		resultLabel.setText("");
 	}
 
 	private boolean isTwoScreensToOneTask() {
