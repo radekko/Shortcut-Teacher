@@ -10,7 +10,7 @@ public class KeyMap {
 	private final Map<String, Integer> keyMap;
 	
 	private KeyMap() {
-		keyMap = createMap();
+		this.keyMap = createMap();
 	}
 	
 	public static KeyMap getInstance() {

@@ -1,7 +1,9 @@
 package main;
 import java.io.File;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -12,37 +14,41 @@ public class ShortcutsCreator {
 	private static final String EXTENSION = ".jpg";
 	private static final String SUFFIX = "_2";
 
-	private final Set<ShortcutInfo> shortcutsInfo;
+	private final List<ShortcutInfo> shortcutsInfo;
 	private Iterator<ShortcutInfo> iterator;
 	private final PropertyLoader propertyLoader;
 
 	public ShortcutsCreator(PropertyLoader propertyLoader) {
 		this.propertyLoader = propertyLoader;
 		this.shortcutsInfo = createPossibleShortcutsFromFilesName();
-		this.iterator = shortcutsInfo.iterator();
+		this.iterator = prepareIterator();
 	}
 
 	public Optional<ShortcutInfo> getNextShortcut() {
-		if(shortcutsInfo.isEmpty())
+		if(isLackOfTasks())
 			return Optional.empty();
 		
 		if (iterator.hasNext())
 			return Optional.of(iterator.next());
-
-		iterator = shortcutsInfo.iterator();
+		
+		iterator = prepareIterator();
 		return getNextShortcut();
 	}
 
-	private Set<ShortcutInfo> createPossibleShortcutsFromFilesName() {
-		Set<String> keys = readKeyShortcutsFromFilename();
-		return keys.stream().map(this::convertKeysToShortcutInfo).collect(Collectors.toSet());
+	private boolean isLackOfTasks() {
+		return shortcutsInfo.isEmpty();
+	}
+
+	private List<ShortcutInfo> createPossibleShortcutsFromFilesName() {
+		List<String> keys = readKeyShortcutsFromFilename();
+		return keys.stream().map(this::convertKeysToShortcutInfo).collect(Collectors.toList());
 	}
 
 	private ShortcutInfo convertKeysToShortcutInfo(String keys) {
 		return new ShortcutInfo(keys, propertyLoader.get(keys));
 	}
 
-	private Set<String> readKeyShortcutsFromFilename() {
+	private List<String> readKeyShortcutsFromFilename() {
 		File[] files = new File(PATH_TO_IMAGES).listFiles();
 
 		return Arrays.stream(files)
@@ -51,7 +57,7 @@ public class ShortcutsCreator {
 					 .map(File::getName)
 					 .filter(this::rejectDuplicate)
 					 .map(this::removeExtension)
-					 .collect(Collectors.toSet());
+					 .collect(Collectors.toList());
 	}
 	
 	private boolean fileIsNotHidden(File f) {
@@ -66,6 +72,11 @@ public class ShortcutsCreator {
 
 	private String removeExtension(String s) {
 		return s.replace(EXTENSION, "");
+	}
+	
+	private Iterator<ShortcutInfo> prepareIterator() {
+		Collections.shuffle(shortcutsInfo);
+		return shortcutsInfo.iterator();
 	}
 
 }
