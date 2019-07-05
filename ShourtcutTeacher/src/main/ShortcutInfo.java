@@ -1,5 +1,6 @@
 package main;
 import java.util.Arrays;
+import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -49,4 +50,19 @@ public class ShortcutInfo {
 		return KeyMap.getInstance().getKey(keyName);
 	}
 	
+	@Override
+	public boolean equals(Object o) {
+		if (o == this)
+			return true;
+		if (!(o instanceof ShortcutInfo)) {
+			return false;
+		}
+		ShortcutInfo info = (ShortcutInfo) o;
+		return keysAsString == info.keysAsString && Objects.equals(description, info.description);
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(keysAsString, description);
+	}
 }
