@@ -5,6 +5,7 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.io.FileNotFoundException;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -12,6 +13,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.border.LineBorder;
 
@@ -36,6 +38,7 @@ public class ScreenDialog extends JFrame {
 	private JLabel labelDescription;
 	private final Set<Integer> pressed = new HashSet<>();
 	private static final long serialVersionUID = 1L;
+	private JLabel betweenScreenLabel;
 	
 	public ScreenDialog(TaskFactory taskCreator){
 		this.taskCreator = taskCreator;
@@ -45,7 +48,17 @@ public class ScreenDialog extends JFrame {
 	}
 	
 	private void loadTask() {
-		Task task = taskCreator.getNextTask();
+		try {
+			Task task = taskCreator.getNextTask();
+			setFields(task);
+		} catch (FileNotFoundException e) {
+			JOptionPane.showMessageDialog(this,
+				        "Folder with tasks is empty. You should add some tasks to start application.");
+			System.exit(0);
+		} 
+	}
+
+	private void setFields(Task task) {
 		imageBefore = task.getImageBefore();
 		imageAfter = task.getImageAfter();
 		currentShortcut = task.getShortcut().getKeysAsString();
@@ -115,20 +128,27 @@ public class ScreenDialog extends JFrame {
 		JPanel panelJPG = new JPanel();
 //		panelJPG.setBorder(BORDER);
 		
-		labelBefore = new JLabel("  =>  ", imageBefore, JLabel.CENTER);
+		labelBefore = new JLabel(imageBefore, JLabel.CENTER);
+		betweenScreenLabel = new JLabel("  =>  ");
 		labelAfter = new JLabel("", imageAfter, JLabel.CENTER);
 		
 		panelJPG.add(labelBefore, BorderLayout.EAST);
-		panelJPG.add(labelAfter, BorderLayout.CENTER);
+		panelJPG.add(betweenScreenLabel, BorderLayout.CENTER);
+		panelJPG.add(labelAfter, BorderLayout.WEST);
 		
 		this.add(panelJPG, BorderLayout.CENTER);
 	}
 	
 	private void initConfirmPanel() {
 		JPanel mainPanel = new JPanel();
-		mainPanel.setLayout(new GridLayout(2, 1));
+		mainPanel.setLayout(new GridLayout(3, 1));
 		
-		JPanel panel = new JPanel();
+		JPanel infoPanel = new JPanel();
+		JLabel labelDescription = new JLabel(new ImageIcon("gui_images/question.jpg"), JLabel.CENTER);
+		labelDescription.setToolTipText("left arrow - check, right - next");
+		infoPanel.add(labelDescription);
+		
+		JPanel buttonsPanel = new JPanel();
 //		panel.setBorder(BORDER);
 
 		checkButt = new JButton("Check");
@@ -137,17 +157,18 @@ public class ScreenDialog extends JFrame {
 		nextButt = new JButton("Next");
 		nextButt.addActionListener(this::nextAction);
 		
-		panel.add(checkButt);
-		panel.add(nextButt);
+		buttonsPanel.add(checkButt);
+		buttonsPanel.add(nextButt);
 		
-		JPanel panel2 = new JPanel();
+		JPanel resultPanel = new JPanel();
 //		panel2.setBorder(BORDER);
 		resultLabel = new JLabel();
 		resultLabel.setFont(resultLabel.getFont().deriveFont(20f));
-		panel2.add(resultLabel, BorderLayout.SOUTH);
+		resultPanel.add(resultLabel, BorderLayout.SOUTH);
 	
-		mainPanel.add(panel, BorderLayout.NORTH);
-		mainPanel.add(panel2, BorderLayout.CENTER);
+		mainPanel.add(infoPanel, BorderLayout.NORTH);
+		mainPanel.add(buttonsPanel, BorderLayout.CENTER);
+		mainPanel.add(resultPanel, BorderLayout.SOUTH);
 		this.add(mainPanel, BorderLayout.SOUTH);
 	}
 	
@@ -169,7 +190,27 @@ public class ScreenDialog extends JFrame {
 		loadTask();
 		labelDescription.setText(description);
 		labelBefore.setIcon(imageBefore);
-		labelAfter.setIcon(imageAfter);
+		
+		if(isTwoScreensToOneTask())
+			setFieldsForTwoScreenTask();
+		else
+			setFieldsForOneScreenTask();
+		
 		resultLabel.setText("");
+	}
+
+	private boolean isTwoScreensToOneTask() {
+		return imageAfter.getIconHeight() > 0;
+	}
+	
+	private void setFieldsForOneScreenTask() {
+		labelAfter.setVisible(false);
+		betweenScreenLabel.setVisible(false);
+	}
+	
+	private void setFieldsForTwoScreenTask() {
+		labelAfter.setVisible(true);
+		betweenScreenLabel.setVisible(true);
+		labelAfter.setIcon(imageAfter);
 	}
 }

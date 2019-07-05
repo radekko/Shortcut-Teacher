@@ -2,12 +2,13 @@ package main;
 import java.io.File;
 import java.util.Arrays;
 import java.util.Iterator;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 public class ShortcutsCreator {
 
-	private static final String PATH_TO_IMAGES = "image/";
+	private static final String PATH_TO_IMAGES = "images/";
 	private static final String EXTENSION = ".jpg";
 	private static final String SUFFIX = "_2";
 
@@ -21,9 +22,12 @@ public class ShortcutsCreator {
 		this.iterator = shortcutsInfo.iterator();
 	}
 
-	public ShortcutInfo getNextShortcut() {
+	public Optional<ShortcutInfo> getNextShortcut() {
+		if(shortcutsInfo.isEmpty())
+			return Optional.empty();
+		
 		if (iterator.hasNext())
-			return iterator.next();
+			return Optional.of(iterator.next());
 
 		iterator = shortcutsInfo.iterator();
 		return getNextShortcut();
@@ -42,11 +46,16 @@ public class ShortcutsCreator {
 		File[] files = new File(PATH_TO_IMAGES).listFiles();
 
 		return Arrays.stream(files)
+					 .filter(this::fileIsNotHidden)
 					 .filter(File::isFile)
 					 .map(File::getName)
 					 .filter(this::rejectDuplicate)
 					 .map(this::removeExtension)
 					 .collect(Collectors.toSet());
+	}
+	
+	private boolean fileIsNotHidden(File f) {
+		return !f.isHidden();
 	}
 
 	private boolean rejectDuplicate(String s) {

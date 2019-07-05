@@ -1,8 +1,11 @@
 package main;
 
+import java.io.FileNotFoundException;
+import java.util.Optional;
+
 public class TaskFactory {
 
-	private static final String PATH_TO_IMAGES = "image/";
+	private static final String PATH_TO_IMAGES = "images/";
 	private static final String EXTENSION = ".jpg";
 	private static final String SUFFIX = "_2";
 	private final ShortcutsCreator shortcutsCreator;
@@ -11,15 +14,15 @@ public class TaskFactory {
 		this.shortcutsCreator = shortcutsCreator;
 	}
 
-	public Task getNextTask() {
-		ShortcutInfo shortcut = shortcutsCreator.getNextShortcut();
-		return createTaskToCurrentShortcut(shortcut);
+	public Task getNextTask() throws FileNotFoundException{
+		Optional<ShortcutInfo> shortcut = shortcutsCreator.getNextShortcut();
+		return shortcut.flatMap(this::createTask).orElseThrow(() -> new FileNotFoundException("Lack of tasks"));
 	}
 	
-	private Task createTaskToCurrentShortcut(ShortcutInfo shortcut) {
+	private Optional<Task> createTask(ShortcutInfo shortcut){
 		String pathToImageBefore = PATH_TO_IMAGES + shortcut.getKeysAsString() + EXTENSION;
 		String pathToImageAfter = PATH_TO_IMAGES + shortcut.getKeysAsString() + SUFFIX + EXTENSION;
-		return new Task(pathToImageBefore, pathToImageAfter, shortcut);
+		return Optional.of(new Task(pathToImageBefore, pathToImageAfter, shortcut));
 	}
 
 }
