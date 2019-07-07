@@ -1,15 +1,18 @@
-package main;
+package shortcut;
 import java.util.Arrays;
 import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-public class ShortcutInfo {
+import utils.KeyMap;
+import utils.PropertyLoader;
+
+public class Shortcut {
 	private final String keysAsString;
 	private final Set<Integer> keys;
 	private final String description;
 	
-	public ShortcutInfo(String keysAsString) {
+	Shortcut(String keysAsString) {
 		this.keysAsString = keysAsString;
 		this.keys = convertStringToKeys(keysAsString);
 		this.description = PropertyLoader.getLoader().get(keysAsString);
@@ -57,10 +60,10 @@ public class ShortcutInfo {
 	public boolean equals(Object o) {
 		if (o == this)
 			return true;
-		if (!(o instanceof ShortcutInfo)) {
+		if (!(o instanceof Shortcut)) {
 			return false;
 		}
-		ShortcutInfo info = (ShortcutInfo) o;
+		Shortcut info = (Shortcut) o;
 		return keysAsString == info.keysAsString && description == info.description;
 	}
 

@@ -1,4 +1,4 @@
-package main;
+package shortcut;
 import java.io.File;
 import java.util.Arrays;
 import java.util.Collections;
@@ -7,21 +7,20 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-public class ShortcutsInfoCreator {
-
+public class ShortcutsFactory {
 	private static final String PATH_TO_IMAGES = "images/";
 	private static final String EXTENSION = ".jpg";
 	private static final String SUFFIX = "_2";
 
-	private final List<ShortcutInfo> shortcutsInfo;
-	private Iterator<ShortcutInfo> iterator;
+	private final List<Shortcut> shortcutsInfo;
+	private Iterator<Shortcut> iterator;
 
-	public ShortcutsInfoCreator() {
+	public ShortcutsFactory() {
 		this.shortcutsInfo = createPossibleShortcutsFromFilesName();
 		this.iterator = prepareIterator();
 	}
 
-	public Optional<ShortcutInfo> getNextShortcut() {
+	public Optional<Shortcut> getNextShortcut() {
 		if(isLackOfTasks())
 			return Optional.empty();
 		
@@ -36,13 +35,9 @@ public class ShortcutsInfoCreator {
 		return shortcutsInfo.isEmpty();
 	}
 
-	private List<ShortcutInfo> createPossibleShortcutsFromFilesName() {
+	private List<Shortcut> createPossibleShortcutsFromFilesName() {
 		List<String> keys = readKeysFromFilename();
-		return keys.stream().map(this::convertKeysToShortcutInfo).collect(Collectors.toList());
-	}
-
-	private ShortcutInfo convertKeysToShortcutInfo(String keys) {
-		return new ShortcutInfo(keys);
+		return keys.stream().map(Shortcut::new).collect(Collectors.toList());
 	}
 
 	private List<String> readKeysFromFilename() {
@@ -71,7 +66,7 @@ public class ShortcutsInfoCreator {
 		return s.replace(EXTENSION, "");
 	}
 	
-	private Iterator<ShortcutInfo> prepareIterator() {
+	private Iterator<Shortcut> prepareIterator() {
 		Collections.shuffle(shortcutsInfo);
 		return shortcutsInfo.iterator();
 	}

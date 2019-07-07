@@ -15,12 +15,11 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
-import main.Task;
-import main.TaskCreator;
+import task.Task;
+import task.TasksFactory;
 
 public class ScreenDialog extends JFrame {
-
-	private TaskCreator taskCreator;
+	private TasksFactory tasksFactory;
 	private String currentShortcut;
 	private Set<Integer> searchedKeys;
 	private String description;
@@ -37,8 +36,8 @@ public class ScreenDialog extends JFrame {
 	private JLabel resultLabel;
 	private static final long serialVersionUID = 1L;
 	
-	public ScreenDialog(TaskCreator taskCreator){
-		this.taskCreator = taskCreator;
+	public ScreenDialog(TasksFactory taskFactory){
+		this.tasksFactory = taskFactory;
 		loadTask();
 		initFrame();
 		initComponents();
@@ -46,7 +45,7 @@ public class ScreenDialog extends JFrame {
 	
 	private void loadTask() {
 		try {
-			Task task = taskCreator.getNextTask();
+			Task task = tasksFactory.getNextTask();
 			setFields(task);
 		} catch (FileNotFoundException e) {
 			JOptionPane.showMessageDialog(this,

@@ -1,9 +1,8 @@
-package main;
+package utils;
 import static java.awt.event.KeyEvent.*;
 
 import java.util.HashMap;
 import java.util.Map;
-
 
 public class KeyMap {
 	private static KeyMap INSTANCE;
