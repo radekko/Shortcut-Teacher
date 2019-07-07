@@ -6,18 +6,21 @@ import java.util.stream.Collectors;
 
 public class ShortcutInfo {
 	private final String keysAsString;
+	private final Set<Integer> keys;
 	private final String description;
 	
-	public ShortcutInfo(String keysAsString, String description) {
+	public ShortcutInfo(String keysAsString) {
 		this.keysAsString = keysAsString;
-		this.description = description;
+		this.keys = convertStringToKeys(keysAsString);
+		this.description = PropertyLoader.getLoader().get(keysAsString);
 	}
-	
+
 	public String getKeysAsString() {
 		return keysAsString;
+	
 	}	
 	public Set<Integer> getKeys() {
-		return convertStringToKeys(keysAsString);
+		return keys;
 	}
 
 	public String getDescription() {
@@ -58,11 +61,11 @@ public class ShortcutInfo {
 			return false;
 		}
 		ShortcutInfo info = (ShortcutInfo) o;
-		return keysAsString == info.keysAsString && Objects.equals(description, info.description);
+		return keysAsString == info.keysAsString && description == info.description;
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(keysAsString, description);
+		return Objects.hash(keysAsString, keys, description);
 	}
 }

@@ -3,14 +3,14 @@ package main;
 import java.io.FileNotFoundException;
 import java.util.Optional;
 
-public class TaskFactory {
+public class TaskCreator {
 
 	private static final String PATH_TO_IMAGES = "images/";
 	private static final String EXTENSION = ".jpg";
 	private static final String SUFFIX = "_2";
-	private final ShortcutsCreator shortcutsCreator;
+	private final ShortcutsInfoCreator shortcutsCreator;
 
-	public TaskFactory(ShortcutsCreator shortcutsCreator) {
+	public TaskCreator(ShortcutsInfoCreator shortcutsCreator) {
 		this.shortcutsCreator = shortcutsCreator;
 	}
 

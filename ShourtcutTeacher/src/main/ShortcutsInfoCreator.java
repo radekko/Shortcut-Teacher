@@ -5,10 +5,9 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 import java.util.stream.Collectors;
 
-public class ShortcutsCreator {
+public class ShortcutsInfoCreator {
 
 	private static final String PATH_TO_IMAGES = "images/";
 	private static final String EXTENSION = ".jpg";
@@ -16,10 +15,8 @@ public class ShortcutsCreator {
 
 	private final List<ShortcutInfo> shortcutsInfo;
 	private Iterator<ShortcutInfo> iterator;
-	private final PropertyLoader propertyLoader;
 
-	public ShortcutsCreator(PropertyLoader propertyLoader) {
-		this.propertyLoader = propertyLoader;
+	public ShortcutsInfoCreator() {
 		this.shortcutsInfo = createPossibleShortcutsFromFilesName();
 		this.iterator = prepareIterator();
 	}
@@ -40,15 +37,15 @@ public class ShortcutsCreator {
 	}
 
 	private List<ShortcutInfo> createPossibleShortcutsFromFilesName() {
-		List<String> keys = readKeyShortcutsFromFilename();
+		List<String> keys = readKeysFromFilename();
 		return keys.stream().map(this::convertKeysToShortcutInfo).collect(Collectors.toList());
 	}
 
 	private ShortcutInfo convertKeysToShortcutInfo(String keys) {
-		return new ShortcutInfo(keys, propertyLoader.get(keys));
+		return new ShortcutInfo(keys);
 	}
 
-	private List<String> readKeyShortcutsFromFilename() {
+	private List<String> readKeysFromFilename() {
 		File[] files = new File(PATH_TO_IMAGES).listFiles();
 
 		return Arrays.stream(files)

@@ -16,11 +16,11 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import main.Task;
-import main.TaskFactory;
+import main.TaskCreator;
 
 public class ScreenDialog extends JFrame {
 
-	private TaskFactory taskCreator;
+	private TaskCreator taskCreator;
 	private String currentShortcut;
 	private Set<Integer> searchedKeys;
 	private String description;
@@ -37,7 +37,7 @@ public class ScreenDialog extends JFrame {
 	private JLabel resultLabel;
 	private static final long serialVersionUID = 1L;
 	
-	public ScreenDialog(TaskFactory taskCreator){
+	public ScreenDialog(TaskCreator taskCreator){
 		this.taskCreator = taskCreator;
 		loadTask();
 		initFrame();
