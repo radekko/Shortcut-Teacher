@@ -1,6 +1,9 @@
 package utils;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Properties;
 
 public class PropertyLoader {
@@ -23,6 +26,14 @@ public class PropertyLoader {
 
 	public String get(String value) {
 		return prop.getProperty(value);
+	}
+	
+	public Map<String, String> getAll(){
+		Map<String, String> map = new HashMap<>();
+		for (Entry<Object, Object> entry : prop.entrySet())
+		    map.put((String) entry.getKey(), (String) entry.getValue());
+		
+		return map;
 	}
 
 }

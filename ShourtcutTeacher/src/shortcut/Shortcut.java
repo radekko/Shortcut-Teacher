@@ -17,6 +17,12 @@ public class Shortcut {
 		this.keys = convertStringToKeys(keysAsString);
 		this.description = PropertyLoader.getLoader().get(keysAsString);
 	}
+	
+	Shortcut(String keysAsString, String description) {
+		this.keysAsString = keysAsString;
+		this.description = description;
+		this.keys = convertStringToKeys(keysAsString);
+	}
 
 	public String getKeysAsString() {
 		return keysAsString;
