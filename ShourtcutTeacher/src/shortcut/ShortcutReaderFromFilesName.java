@@ -6,19 +6,19 @@ import java.util.List;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
-public class ShortcutReaderFromFilesName implements Supplier<List<Shortcut>>{
+public class ShortcutReaderFromFilesName implements Supplier<List<ReadShortcut>>{
 	private static final String PATH_TO_IMAGES = "images/";
 	private static final String EXTENSION = ".jpg";
 	private static final String SUFFIX = "_2";
 	
 	@Override
-	public List<Shortcut> get() {
+	public List<ReadShortcut> get() {
 		return createPossibleShortcutsFromFilesName();
 	}
 	
-	private List<Shortcut> createPossibleShortcutsFromFilesName() {
+	private List<ReadShortcut> createPossibleShortcutsFromFilesName() {
 		List<String> keys = readKeysFromFilename();
-		return keys.stream().map(Shortcut::new).collect(Collectors.toList());
+		return keys.stream().map(ReadShortcut::new).collect(Collectors.toList());
 	}
 
 	private List<String> readKeysFromFilename() {

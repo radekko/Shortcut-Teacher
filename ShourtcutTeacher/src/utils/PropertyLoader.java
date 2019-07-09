@@ -10,6 +10,7 @@ public class PropertyLoader {
 
 	private final String PROPERTY_FILE_NAME = "app.properties";
 	private final Properties prop;
+	private static PropertyLoader INSTANCE;
 	
 	private PropertyLoader() {
 		prop = new Properties();
@@ -21,7 +22,10 @@ public class PropertyLoader {
 	}
 	
 	public static PropertyLoader getLoader() {
-		return new PropertyLoader();
+		if(INSTANCE == null)
+			return new PropertyLoader();
+		
+		return INSTANCE;
 	}
 
 	public String get(String value) {

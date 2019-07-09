@@ -1,37 +1,61 @@
 package shortcut;
-import java.util.Collections;
-import java.util.Iterator;
+import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
+import java.util.Set;
 import java.util.function.Supplier;
+import java.util.stream.Collectors;
+
+import utils.KeyMap;
+import utils.PropertyLoader;
 
 public class ShortcutsFactory {
-	private final List<Shortcut> shortcutsInfo;
-	private Iterator<Shortcut> iterator;
+	private final List<ReadShortcut> readShortcut;
+	private final List<Shortcut> shortcuts;
 
-	public ShortcutsFactory(Supplier<List<Shortcut>> shortcutsProducer) {
-		this.shortcutsInfo = shortcutsProducer.get();
-		this.iterator = prepareIterator();
+	public ShortcutsFactory(Supplier<List<ReadShortcut>> shortcutsProducer) {
+		this.readShortcut = shortcutsProducer.get();
+		this.shortcuts = convertReadShortcut(readShortcut);
 	}
-
-	public Optional<Shortcut> getNextShortcut() {
-		if(isLackOfTasks())
-			return Optional.empty();
+	
+	public List<Shortcut> getShortcuts(){
+		return shortcuts;
+	}
+	
+	private List<Shortcut> convertReadShortcut(List<ReadShortcut> read){
+		return read.stream().map(this::convertSingle).collect(Collectors.toList());
+	}
+	
+	private Shortcut convertSingle(ReadShortcut readShortcut) {
+		String keysAsString = readShortcut.getKeysAsString();
+		Set<Integer> keys = convertStringToKeys(keysAsString);
+		String description = readShortcut.getDescription().orElseGet(() -> PropertyLoader.getLoader().get(keysAsString));
+		return new Shortcut(keysAsString,keys,description);
+	}
+	
+	private Set<Integer> convertStringToKeys(String keysAsString) {
+		String[] extractedKeys = getKeysAsTab(keysAsString);
 		
-		if (iterator.hasNext())
-			return Optional.of(iterator.next());
+		return Arrays.stream(extractedKeys)
+					 .map(this::convertSingleKey)
+					 .collect(Collectors.toSet());
+	}
+	
+	private String[] getKeysAsTab(String keysAsString) {
+		String[] parts = keysAsString.split("\\+");
+		rejectSecondShortcut(parts);
+		return parts;
+	}
+	
+	private String[] rejectSecondShortcut(String[] parts) {
+		String last = parts[parts.length-1];
+		last = last.split("\\(")[0];
+		parts[parts.length-1] = last;
 		
-		iterator = prepareIterator();
-		return getNextShortcut();
+		return parts;
 	}
-
-	private boolean isLackOfTasks() {
-		return shortcutsInfo.isEmpty();
-	}
-
-	private Iterator<Shortcut> prepareIterator() {
-		Collections.shuffle(shortcutsInfo);
-		return shortcutsInfo.iterator();
+	
+	private int convertSingleKey(String keyName) {
+		return KeyMap.getInstance().getKey(keyName);
 	}
 
 }
