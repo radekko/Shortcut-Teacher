@@ -1,26 +1,20 @@
 package shortcut;
 
-import java.util.Optional;
-
 public class ReadShortcut {
 	private final String keysAsString;
-	private Optional<String> description;
+	private final String description;
 	
 	public ReadShortcut(String keysAsString, String description) {
 		this.keysAsString = keysAsString;
-		this.description = Optional.of(description);
-	}
-
-	public ReadShortcut(String keysAsString) {
-		this.keysAsString = keysAsString;
-		this.description = Optional.empty();
+		this.description = description;
 	}
 
 	public String getKeysAsString() {
 		return keysAsString;
 	}
 
-	public Optional<String> getDescription() {
+	public String getDescription() {
 		return description;
 	}
+	
 }

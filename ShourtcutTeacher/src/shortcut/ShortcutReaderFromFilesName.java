@@ -3,26 +3,38 @@ package shortcut;
 import java.io.File;
 import java.util.Arrays;
 import java.util.List;
-import java.util.function.Supplier;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
-public class ShortcutReaderFromFilesName implements Supplier<List<ReadShortcut>>{
-	private static final String PATH_TO_IMAGES = "images/";
-	private static final String EXTENSION = ".jpg";
-	private static final String SUFFIX = "_2";
+import utils.PropertyLoader;
+
+public class ShortcutReaderFromFilesName implements Function<PropertyLoader,List<ReadShortcut>>{
+	private PropertyLoader propertyLoader;
 	
 	@Override
-	public List<ReadShortcut> get() {
+	public List<ReadShortcut> apply(PropertyLoader propertyLoader) {
+		this.propertyLoader = propertyLoader;
 		return createPossibleShortcutsFromFilesName();
 	}
 	
 	private List<ReadShortcut> createPossibleShortcutsFromFilesName() {
 		List<String> keys = readKeysFromFilename();
-		return keys.stream().map(ReadShortcut::new).collect(Collectors.toList());
+		return keys.stream().map(createReadShortcuts()).collect(Collectors.toList());
 	}
 
+	private Function<? super String, ? extends ReadShortcut> createReadShortcuts() {
+		return key -> {
+			 String description = loadDescriptionFromProperty(key);
+			 return new ReadShortcut(key,description);
+		 };
+	}
+
+	private String loadDescriptionFromProperty(String key) {
+		return propertyLoader.get(key);
+	}
+	
 	private List<String> readKeysFromFilename() {
-		File[] files = new File(PATH_TO_IMAGES).listFiles();
+		File[] files = new File(propertyLoader.get("PATH_TO_IMAGES")).listFiles();
 
 		return Arrays.stream(files)
 					 .filter(this::fileIsNotHidden)
@@ -38,13 +50,13 @@ public class ShortcutReaderFromFilesName implements Supplier<List<ReadShortcut>>
 	}
 
 	private boolean rejectDuplicate(String s) {
-		if (s.contains(SUFFIX))
+		if (s.contains(propertyLoader.get("SUFFIX")))
 			return false;
 		return true;
 	}
 
 	private String removeExtension(String s) {
-		return s.replace(EXTENSION, "");
+		return s.replace(propertyLoader.get("EXTENSION"), "");
 	}
 
 }

@@ -3,15 +3,15 @@ package shortcut;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Supplier;
+import java.util.function.Function;
 
 import utils.PropertyLoader;
 
-public class ShortcutReaderFromProperties implements Supplier<List<ReadShortcut>>{
+public class ShortcutReaderFromProperties implements Function<PropertyLoader,List<ReadShortcut>>{
 
 	@Override
-	public List<ReadShortcut> get() {
-		Map<String, String> allShortcuts = PropertyLoader.getLoader().getAll();
+	public List<ReadShortcut> apply(PropertyLoader propertyLoader) {
+		Map<String, String> allShortcuts = propertyLoader.getAll();
 		return convertMapToListOfShortcuts(allShortcuts);
 	}
 	
@@ -22,4 +22,5 @@ public class ShortcutReaderFromProperties implements Supplier<List<ReadShortcut>
 		
 		return shortcuts;
 	}
+
 }

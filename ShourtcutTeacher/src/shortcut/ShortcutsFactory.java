@@ -2,23 +2,22 @@ package shortcut;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
-import java.util.function.Supplier;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import utils.KeyMap;
 import utils.PropertyLoader;
 
 public class ShortcutsFactory {
-	private final List<ReadShortcut> readShortcut;
-	private final List<Shortcut> shortcuts;
+	private final Function<PropertyLoader,List<ReadShortcut>> shortcutsProducer;
 
-	public ShortcutsFactory(Supplier<List<ReadShortcut>> shortcutsProducer) {
-		this.readShortcut = shortcutsProducer.get();
-		this.shortcuts = convertReadShortcut(readShortcut);
+	public ShortcutsFactory(Function<PropertyLoader,List<ReadShortcut>> shortcutsProducer) {
+		this.shortcutsProducer = shortcutsProducer;
 	}
 	
-	public List<Shortcut> getShortcuts(){
-		return shortcuts;
+	public List<Shortcut> getShortcuts(PropertyLoader propertyLoader){
+		List<ReadShortcut> readShortcut = shortcutsProducer.apply(propertyLoader);
+		return convertReadShortcut(readShortcut);
 	}
 	
 	private List<Shortcut> convertReadShortcut(List<ReadShortcut> read){
@@ -28,7 +27,7 @@ public class ShortcutsFactory {
 	private Shortcut convertSingle(ReadShortcut readShortcut) {
 		String keysAsString = readShortcut.getKeysAsString();
 		Set<Integer> keys = convertStringToKeys(keysAsString);
-		String description = readShortcut.getDescription().orElseGet(() -> PropertyLoader.getLoader().get(keysAsString));
+		String description = readShortcut.getDescription();
 		return new Shortcut(keysAsString,keys,description);
 	}
 	

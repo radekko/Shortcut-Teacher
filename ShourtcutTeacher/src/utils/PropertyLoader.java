@@ -4,28 +4,27 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
+
+import main.ApplicationMode;
+
 import java.util.Properties;
 
 public class PropertyLoader {
-
-	private final String PROPERTY_FILE_NAME = "app.properties";
+	private static PropertyLoader ECLIPSE_LOADER = new PropertyLoader(ApplicationMode.ECLIPSE);
+	private static PropertyLoader FIREFOX_LOADER = new PropertyLoader(ApplicationMode.FIREFOX);
 	private final Properties prop;
-	private static PropertyLoader INSTANCE;
 	
-	private PropertyLoader() {
-		prop = new Properties();
+	private PropertyLoader(ApplicationMode applicationMode) {
+		this.prop = new Properties();
 		try {
-			prop.load(new FileInputStream(PROPERTY_FILE_NAME));
+			prop.load(new FileInputStream(applicationMode.getPropertyFileName()));
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
 	}
 	
-	public static PropertyLoader getLoader() {
-		if(INSTANCE == null)
-			return new PropertyLoader();
-		
-		return INSTANCE;
+	public static PropertyLoader getLoader(ApplicationMode mode) {
+		return (mode == ApplicationMode.ECLIPSE) ? ECLIPSE_LOADER : FIREFOX_LOADER;
 	}
 
 	public String get(String value) {
