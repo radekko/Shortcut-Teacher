@@ -10,17 +10,17 @@ import javax.swing.ImageIcon;
 
 import main.ApplicationMode;
 import shortcut.Shortcut;
-import shortcut.ShortcutsFactory;
+import shortcut.Shortcuts;
 import utils.PropertyLoader;
 
-public class TasksFactory {
+public class Tasks implements ITasks {
 	private final List<Task> tasks;
 	private Iterator<Task> iterator;
 	private final PropertyLoader propertyLoader;
 
-	public TasksFactory(ShortcutsFactory shortcutsFactory, ApplicationMode applicationMode) {
+	public Tasks(Shortcuts shortcuts, ApplicationMode applicationMode) {
 		this.propertyLoader = PropertyLoader.getLoader(applicationMode);
-		this.tasks = createTasks(shortcutsFactory.getShortcuts(propertyLoader));
+		this.tasks = createTasks(shortcuts.getShortcuts(propertyLoader));
 		this.iterator = prepareIterator();
 	}
 	
@@ -55,11 +55,11 @@ public class TasksFactory {
 	}
 
 	private String createPathToImageBefore(Shortcut shortcut) {
-		return propertyLoader.get("PATH_TO_IMAGES") + shortcut.getKeysAsString() + propertyLoader.get("EXTENSION");
+		return propertyLoader.get("conf.PATH_TO_IMAGES") + shortcut.getKeysAsString() + propertyLoader.get("conf.EXTENSION");
 	}
 
 	private String createPathToImageAfter(Shortcut shortcut) {
-		return propertyLoader.get("PATH_TO_IMAGES")+ shortcut.getKeysAsString() + propertyLoader.get("SUFFIX") + propertyLoader.get("EXTENSION");
+		return propertyLoader.get("conf.PATH_TO_IMAGES") + shortcut.getKeysAsString() + propertyLoader.get("SUFFIX") + propertyLoader.get("conf.EXTENSION");
 	}
 
 }

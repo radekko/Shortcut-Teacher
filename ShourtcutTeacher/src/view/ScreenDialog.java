@@ -6,6 +6,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.io.FileNotFoundException;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.swing.ImageIcon;
@@ -15,13 +16,13 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
+import task.ITasks;
 import task.Task;
-import task.TasksFactory;
 
 public class ScreenDialog extends JFrame {
-	private TasksFactory tasksFactory;
+	private ITasks tasksFactory;
 	private String currentShortcut;
-	private Set<Integer> searchedKeys;
+	private List<Integer> searchedKeys;
 	private String description;
 	private final Set<Integer> pressedKeys = new HashSet<>();
 
@@ -36,8 +37,8 @@ public class ScreenDialog extends JFrame {
 	private JLabel resultLabel;
 	private static final long serialVersionUID = 1L;
 	
-	public ScreenDialog(TasksFactory taskFactory){
-		this.tasksFactory = taskFactory;
+	public ScreenDialog(ITasks tasks){
+		this.tasksFactory = tasks;
 		loadTask();
 		initFrame();
 		initComponents();
@@ -67,19 +68,21 @@ public class ScreenDialog extends JFrame {
 		this.setSize(1000, 400);
 		this.setLocationRelativeTo(null);
 		this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		this.setFocusTraversalKeysEnabled(false);
 		this.setFocusable(true);
 		this.setVisible(true);
 		
 		addKeyListener(new KeyListener(){
             @Override
             public void keyPressed(KeyEvent e) {
+            	if(isPressedEsc(e))
+            		System.exit(0);
             	if(isPressedLeftArrow(e))
             		checkResult();
             	else if(isPressedRightArrow(e))
             		nextTask();
             	else {
 	            	pressedKeys.add(e.getKeyCode());
-	            	
 	            	if(isPressedKeysFitToShortcut())
 	            		nextTask();
             	}
@@ -95,6 +98,10 @@ public class ScreenDialog extends JFrame {
 
 			private boolean isPressedLeftArrow(KeyEvent e) {
 				return e.getKeyCode() == KeyEvent.VK_LEFT;
+			}
+			
+			private boolean isPressedEsc(KeyEvent e) {
+				return e.getKeyCode() == KeyEvent.VK_ESCAPE;
 			}
 
             @Override

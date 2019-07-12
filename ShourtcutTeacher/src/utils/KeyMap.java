@@ -31,6 +31,7 @@ public class KeyMap {
 	    m.put("delete",VK_DELETE);
 	    m.put("shift",VK_SHIFT);
 	    m.put("alt",VK_ALT);
+	    m.put("tab",VK_TAB);
 	    m.put("up",VK_UP);
 	    m.put("down",VK_DOWN);
 	    m.put("left",VK_LEFT);
@@ -66,6 +67,7 @@ public class KeyMap {
 	    m.put("pgUp", VK_PAGE_UP);
 	    m.put("pgDown", VK_PAGE_DOWN);
 	    m.put("f3", VK_F3);
+	    m.put("f12", VK_F12);
 	    m.put("dot",VK_PERIOD);
 	    
 	    return m;

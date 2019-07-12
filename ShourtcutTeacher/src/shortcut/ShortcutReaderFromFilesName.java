@@ -34,7 +34,7 @@ public class ShortcutReaderFromFilesName implements Function<PropertyLoader,List
 	}
 	
 	private List<String> readKeysFromFilename() {
-		File[] files = new File(propertyLoader.get("PATH_TO_IMAGES")).listFiles();
+		File[] files = new File(propertyLoader.get("conf.PATH_TO_IMAGES")).listFiles();
 
 		return Arrays.stream(files)
 					 .filter(this::fileIsNotHidden)
@@ -50,13 +50,13 @@ public class ShortcutReaderFromFilesName implements Function<PropertyLoader,List
 	}
 
 	private boolean rejectDuplicate(String s) {
-		if (s.contains(propertyLoader.get("SUFFIX")))
+		if (s.contains(propertyLoader.get("conf.SUFFIX")))
 			return false;
 		return true;
 	}
 
 	private String removeExtension(String s) {
-		return s.replace(propertyLoader.get("EXTENSION"), "");
+		return s.replace(propertyLoader.get("conf.EXTENSION"), "");
 	}
 
 }

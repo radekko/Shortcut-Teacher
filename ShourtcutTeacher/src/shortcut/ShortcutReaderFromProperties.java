@@ -17,10 +17,20 @@ public class ShortcutReaderFromProperties implements Function<PropertyLoader,Lis
 	
 	private List<ReadShortcut> convertMapToListOfShortcuts(Map<String, String> allShortcuts){
 		List<ReadShortcut> shortcuts = new ArrayList<>();
-		for (Map.Entry<String, String> entry : allShortcuts.entrySet())
-			shortcuts.add(new ReadShortcut(entry.getKey(), entry.getValue()));
+		for (Map.Entry<String, String> entry : allShortcuts.entrySet()) {
+			String key = entry.getKey();
+			if(checkIfKeyIsShortcut(key))
+				shortcuts.add(new ReadShortcut(key, entry.getValue()));
+		}
 		
 		return shortcuts;
+	}
+
+	private boolean checkIfKeyIsShortcut(String key) {
+		if(key.startsWith("conf"))
+			return false;
+		
+		return true;
 	}
 
 }

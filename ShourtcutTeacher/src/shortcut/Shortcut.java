@@ -1,13 +1,13 @@
 package shortcut;
 
-import java.util.Set;
+import java.util.List;
 
 public class Shortcut {
 	private final String keysAsString;
-	private final Set<Integer> keys;
+	private final List<Integer> keys;
 	private final String description;
 	
-	public Shortcut(String keysAsString, Set<Integer> keys, String description) {
+	public Shortcut(String keysAsString, List<Integer> keys, String description) {
 		this.keysAsString = keysAsString;
 		this.keys = keys;
 		this.description = description;
@@ -17,7 +17,7 @@ public class Shortcut {
 		return keysAsString;
 	}
 
-	public Set<Integer> getKeys() {
+	public List<Integer> getKeys() {
 		return keys;
 	}
 
