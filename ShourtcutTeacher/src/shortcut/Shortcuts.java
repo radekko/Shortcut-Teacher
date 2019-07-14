@@ -1,22 +1,19 @@
 package shortcut;
 import java.util.Arrays;
 import java.util.List;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
-import utils.ConcretePropertyLoader;
 import utils.KeyMap;
 
 public class Shortcuts {
-	private final Function<ConcretePropertyLoader,List<ReadShortcut>> shortcutsProducer;
+	private final List<ReadShortcut> readShortcuts;
 
-	public Shortcuts(Function<ConcretePropertyLoader,List<ReadShortcut>> shortcutsProducer) {
-		this.shortcutsProducer = shortcutsProducer;
+	public Shortcuts(List<ReadShortcut> readShortcuts) {
+		this.readShortcuts = readShortcuts;
 	}
 	
-	public List<Shortcut> getShortcuts(ConcretePropertyLoader propertyLoader){
-		List<ReadShortcut> readShortcut = shortcutsProducer.apply(propertyLoader);
-		return convertReadShortcut(readShortcut);
+	public List<Shortcut> getShortcuts(){
+		return convertReadShortcut(readShortcuts);
 	}
 	
 	private List<Shortcut> convertReadShortcut(List<ReadShortcut> read){

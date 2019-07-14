@@ -6,13 +6,13 @@ import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-import utils.ConcretePropertyLoader;
+import propertyLoaders.ConfigurationPropertyLoader;
 
-public class ShortcutReaderFromFilesName implements Function<ConcretePropertyLoader,List<ReadShortcut>>{
-	private ConcretePropertyLoader propertyLoader;
+public class ShortcutReaderFromFilesName implements Function<ConfigurationPropertyLoader,List<ReadShortcut>>{
+	private ConfigurationPropertyLoader propertyLoader;
 	
 	@Override
-	public List<ReadShortcut> apply(ConcretePropertyLoader propertyLoader) {
+	public List<ReadShortcut> apply(ConfigurationPropertyLoader propertyLoader) {
 		this.propertyLoader = propertyLoader;
 		return createPossibleShortcutsFromFilesName();
 	}
@@ -30,11 +30,11 @@ public class ShortcutReaderFromFilesName implements Function<ConcretePropertyLoa
 	}
 
 	private String loadDescriptionFromProperty(String key) {
-		return propertyLoader.getShortcutDscription(key);
+		return propertyLoader.getShortcutDescription(key);
 	}
 	
 	private List<String> readKeysFromFilename() {
-		File[] files = new File(propertyLoader.getPathToImages()).listFiles();
+		File[] files = new File(propertyLoader.getTaskInfo().getPathToImages()).listFiles();
 
 		return Arrays.stream(files)
 					 .filter(this::fileIsNotHidden)
@@ -50,13 +50,13 @@ public class ShortcutReaderFromFilesName implements Function<ConcretePropertyLoa
 	}
 
 	private boolean rejectDuplicate(String s) {
-		if (s.contains(propertyLoader.getSuffix()))
+		if (s.contains(propertyLoader.getTaskInfo().getSuffix()))
 			return false;
 		return true;
 	}
 
 	private String removeExtension(String s) {
-		return s.replace(propertyLoader.getExtension(), "");
+		return s.replace(propertyLoader.getTaskInfo().getExtension(), "");
 	}
 
 }

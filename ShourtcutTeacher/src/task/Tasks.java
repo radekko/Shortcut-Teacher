@@ -8,19 +8,17 @@ import java.util.stream.Collectors;
 
 import javax.swing.ImageIcon;
 
-import main.ApplicationMode;
 import shortcut.Shortcut;
 import shortcut.Shortcuts;
-import utils.ConcretePropertyLoader;
 
-public class Tasks implements ITasks {
+public class Tasks {
 	private final List<Task> tasks;
 	private Iterator<Task> iterator;
-	private final ConcretePropertyLoader propertyLoader;
+	private final TaskInfo taskInfo;
 
-	public Tasks(Shortcuts shortcuts, ApplicationMode applicationMode) {
-		this.propertyLoader = new ConcretePropertyLoader(applicationMode);
-		this.tasks = createTasks(shortcuts.getShortcuts(propertyLoader));
+	public Tasks(Shortcuts shortcuts, TaskInfo taskInfo) {
+		this.taskInfo = taskInfo;
+		this.tasks = createTasks(shortcuts.getShortcuts());
 		this.iterator = prepareIterator();
 	}
 	
@@ -55,11 +53,11 @@ public class Tasks implements ITasks {
 	}
 
 	private String createPathToImageBefore(Shortcut shortcut) {
-		return propertyLoader.getPathToImages() + shortcut.getKeysAsString() + propertyLoader.getExtension();
+		return taskInfo.getPathToImages() + shortcut.getKeysAsString() + taskInfo.getExtension();
 	}
 
 	private String createPathToImageAfter(Shortcut shortcut) {
-		return propertyLoader.getPathToImages() + shortcut.getKeysAsString() + propertyLoader.getSuffix() + propertyLoader.getExtension();
+		return taskInfo.getPathToImages() + shortcut.getKeysAsString() + taskInfo.getSuffix() + taskInfo.getExtension();
 	}
 
 }
