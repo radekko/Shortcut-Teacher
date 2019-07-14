@@ -5,13 +5,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 
-import utils.PropertyLoader;
+import utils.ConcretePropertyLoader;
 
-public class ShortcutReaderFromProperties implements Function<PropertyLoader,List<ReadShortcut>>{
+public class ShortcutReaderFromProperties implements Function<ConcretePropertyLoader,List<ReadShortcut>>{
 
 	@Override
-	public List<ReadShortcut> apply(PropertyLoader propertyLoader) {
-		Map<String, String> allShortcuts = propertyLoader.getAll();
+	public List<ReadShortcut> apply(ConcretePropertyLoader propertyLoader) {
+		Map<String, String> allShortcuts = propertyLoader.getAllFromPropertyFile();
 		return convertMapToListOfShortcuts(allShortcuts);
 	}
 	

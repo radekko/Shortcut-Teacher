@@ -4,17 +4,17 @@ import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+import utils.ConcretePropertyLoader;
 import utils.KeyMap;
-import utils.PropertyLoader;
 
 public class Shortcuts {
-	private final Function<PropertyLoader,List<ReadShortcut>> shortcutsProducer;
+	private final Function<ConcretePropertyLoader,List<ReadShortcut>> shortcutsProducer;
 
-	public Shortcuts(Function<PropertyLoader,List<ReadShortcut>> shortcutsProducer) {
+	public Shortcuts(Function<ConcretePropertyLoader,List<ReadShortcut>> shortcutsProducer) {
 		this.shortcutsProducer = shortcutsProducer;
 	}
 	
-	public List<Shortcut> getShortcuts(PropertyLoader propertyLoader){
+	public List<Shortcut> getShortcuts(ConcretePropertyLoader propertyLoader){
 		List<ReadShortcut> readShortcut = shortcutsProducer.apply(propertyLoader);
 		return convertReadShortcut(readShortcut);
 	}
