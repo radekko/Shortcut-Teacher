@@ -26,6 +26,7 @@ public class KeyMap {
 	private Map<String, Integer> createMap() {
 	    Map<String,Integer> m = new HashMap<>();
 	    m.put("enter", VK_ENTER);
+	    m.put("space",VK_SPACE);
 	    m.put("backspace",VK_BACK_SPACE);
 	    m.put("ctrl",VK_CONTROL);
 	    m.put("delete",VK_DELETE);

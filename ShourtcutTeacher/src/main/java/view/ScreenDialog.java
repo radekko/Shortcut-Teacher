@@ -20,7 +20,7 @@ import task.Task;
 import task.Tasks;
 
 public class ScreenDialog extends JFrame {
-	private Tasks tasksFactory;
+	private Tasks tasks;
 	private String currentShortcut;
 	private List<Integer> searchedKeys;
 	private String description;
@@ -38,7 +38,7 @@ public class ScreenDialog extends JFrame {
 	private static final long serialVersionUID = 1L;
 	
 	public ScreenDialog(Tasks tasks){
-		this.tasksFactory = tasks;
+		this.tasks = tasks;
 		loadTask();
 		initFrame();
 		initComponents();
@@ -46,7 +46,7 @@ public class ScreenDialog extends JFrame {
 	
 	private void loadTask() {
 		try {
-			Task task = tasksFactory.getNextTask();
+			Task task = tasks.getNextTask();
 			setFields(task);
 		} catch (FileNotFoundException e) {
 			JOptionPane.showMessageDialog(this,
@@ -145,7 +145,7 @@ public class ScreenDialog extends JFrame {
 		mainPanel.setLayout(new GridLayout(3, 1));
 		
 		JPanel infoPanel = new JPanel();
-		JLabel labelDescription = new JLabel(new ImageIcon("gui_images/question.jpg"), JLabel.CENTER);
+		JLabel labelDescription = new JLabel(new ImageIcon("src/main/resources/gui/question.jpg"), JLabel.CENTER);
 		labelDescription.setToolTipText("left arrow - check, right - next");
 		infoPanel.add(labelDescription);
 		
