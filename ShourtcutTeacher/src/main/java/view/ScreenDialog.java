@@ -56,8 +56,8 @@ public class ScreenDialog extends JFrame {
 	}
 
 	private void setFields(Task task) {
-		imageBefore = task.getImageBefore();
-		imageAfter = task.getImageAfter();
+		imageBefore = new ImageIcon(task.getPathBefore());
+		imageAfter = new ImageIcon(task.getPathAfter());
 		currentShortcut = task.getShortcut().getKeysAsString();
 		searchedKeys = task.getShortcut().getKeys();
 		description = task.getShortcut().getDescription();

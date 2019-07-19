@@ -6,8 +6,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import javax.swing.ImageIcon;
-
 import shortcut.Shortcut;
 import shortcut.Shortcuts;
 
@@ -47,17 +45,7 @@ public class Tasks {
 	}
 	
 	private Task createTask(Shortcut shortcut) {
-		return new Task(shortcut,
-				 new ImageIcon(createPathToImageBefore(shortcut)),
-				 new ImageIcon(createPathToImageAfter(shortcut)));
-	}
-
-	private String createPathToImageBefore(Shortcut shortcut) {
-		return taskInfo.getPathToImages() + shortcut.getKeysAsString() + taskInfo.getExtension();
-	}
-
-	private String createPathToImageAfter(Shortcut shortcut) {
-		return taskInfo.getPathToImages() + shortcut.getKeysAsString() + taskInfo.getSuffix() + taskInfo.getExtension();
+		return new Task(shortcut,taskInfo);
 	}
 
 }
