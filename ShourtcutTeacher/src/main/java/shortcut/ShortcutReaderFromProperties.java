@@ -7,20 +7,20 @@ import java.util.function.Function;
 
 import propertyLoaders.ConfigurationPropertyLoader;
 
-public class ShortcutReaderFromProperties implements Function<ConfigurationPropertyLoader,List<ReadShortcut>>{
+public class ShortcutReaderFromProperties implements Function<ConfigurationPropertyLoader,List<Shortcut>>{
 
 	@Override
-	public List<ReadShortcut> apply(ConfigurationPropertyLoader propertyLoader) {
+	public List<Shortcut> apply(ConfigurationPropertyLoader propertyLoader) {
 		Map<String, String> allShortcuts = propertyLoader.getAllFromPropertyFile();
 		return convertMapToListOfShortcuts(allShortcuts);
 	}
 	
-	private List<ReadShortcut> convertMapToListOfShortcuts(Map<String, String> allShortcuts){
-		List<ReadShortcut> shortcuts = new ArrayList<>();
+	private List<Shortcut> convertMapToListOfShortcuts(Map<String, String> allShortcuts){
+		List<Shortcut> shortcuts = new ArrayList<>();
 		for (Map.Entry<String, String> entry : allShortcuts.entrySet()) {
 			String key = entry.getKey();
 			if(checkIfKeyIsShortcut(key))
-				shortcuts.add(new ReadShortcut(key, entry.getValue()));
+				shortcuts.add(new Shortcut(key, entry.getValue()));
 		}
 		
 		return shortcuts;

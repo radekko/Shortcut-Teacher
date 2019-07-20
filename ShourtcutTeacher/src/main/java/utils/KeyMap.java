@@ -20,6 +20,9 @@ public class KeyMap {
 	}
 	
 	public int getKey(String keyName) {
+		if(!keyMap.containsKey(keyName))
+			throw new IllegalArgumentException("Unsupported value: " + keyName);
+
 		return keyMap.get(keyName);
 	}
 	

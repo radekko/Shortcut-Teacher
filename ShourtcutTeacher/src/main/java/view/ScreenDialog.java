@@ -6,7 +6,6 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.io.FileNotFoundException;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import javax.swing.ImageIcon;
@@ -22,7 +21,7 @@ import task.Tasks;
 public class ScreenDialog extends JFrame {
 	private Tasks tasks;
 	private String currentShortcut;
-	private List<Integer> searchedKeys;
+	private Set<Integer> searchedKeys;
 	private String description;
 	private final Set<Integer> pressedKeys = new HashSet<>();
 

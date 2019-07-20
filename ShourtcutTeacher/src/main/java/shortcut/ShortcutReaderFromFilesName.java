@@ -8,24 +8,24 @@ import java.util.stream.Collectors;
 
 import propertyLoaders.ConfigurationPropertyLoader;
 
-public class ShortcutReaderFromFilesName implements Function<ConfigurationPropertyLoader,List<ReadShortcut>>{
+public class ShortcutReaderFromFilesName implements Function<ConfigurationPropertyLoader,List<Shortcut>>{
 	private ConfigurationPropertyLoader propertyLoader;
 	
 	@Override
-	public List<ReadShortcut> apply(ConfigurationPropertyLoader propertyLoader) {
+	public List<Shortcut> apply(ConfigurationPropertyLoader propertyLoader) {
 		this.propertyLoader = propertyLoader;
 		return createPossibleShortcutsFromFilesName();
 	}
 	
-	private List<ReadShortcut> createPossibleShortcutsFromFilesName() {
+	private List<Shortcut> createPossibleShortcutsFromFilesName() {
 		List<String> keys = readKeysFromFilename();
-		return keys.stream().map(createReadShortcuts()).collect(Collectors.toList());
+		return keys.stream().map(createShortcut()).collect(Collectors.toList());
 	}
 
-	private Function<? super String, ? extends ReadShortcut> createReadShortcuts() {
+	private Function<? super String, ? extends Shortcut> createShortcut() {
 		return key -> {
 			 String description = loadDescriptionFromProperty(key);
-			 return new ReadShortcut(key,description);
+			 return new Shortcut(key,description);
 		 };
 	}
 

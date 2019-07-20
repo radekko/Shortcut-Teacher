@@ -13,9 +13,9 @@ public class Main {
 	            	
 	            	// 4 possible application configs:
 	            	taskFacade = new TasksFacade(ApplicationConfig.ECLIPSE_READ_FROM_PROPERTIES);
-//	            	taskFacade = new TaskFacade(ApplicationConfig.ECLIPSE_READ_FROM_FILE_NAMES);
-//	            	taskFacade = new TaskFacade(ApplicationConfig.FIREFOX_READ_FROM_FILE_NAMES);
-//	            	taskFacade = new TaskFacade(ApplicationConfig.FIREFOX_READ_FROM_FILE_NAMES);
+//	            	taskFacade = new TasksFacade(ApplicationConfig.ECLIPSE_READ_FROM_FILE_NAMES);
+//	            	taskFacade = new TasksFacade(ApplicationConfig.FIREFOX_READ_FROM_FILE_NAMES);
+//	            	taskFacade = new TasksFacade(ApplicationConfig.FIREFOX_READ_FROM_FILE_NAMES);
 					
 	            	new ScreenDialog(taskFacade.getTasks());
 	            }

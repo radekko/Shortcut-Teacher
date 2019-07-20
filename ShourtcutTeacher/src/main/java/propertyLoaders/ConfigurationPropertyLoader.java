@@ -8,10 +8,10 @@ import task.TaskInfo;
 public class ConfigurationPropertyLoader{
 
 	private final PropertyLoader propertyLoader;
+	private final TaskInfo taskInfo;
 	private final String PATH_TO_IMAGES = "conf.PATH_TO_IMAGES";
 	private final String SUFFIX = "conf.SUFFIX";
 	private final String EXTENSION = "conf.EXTENSION";
-	private final TaskInfo taskInfo;
 	
 	public ConfigurationPropertyLoader(ApplicationMode applicationMode) {
 		this.propertyLoader = new PropertyLoader(applicationMode);
