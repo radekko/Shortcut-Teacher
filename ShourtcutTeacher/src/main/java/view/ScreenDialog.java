@@ -4,8 +4,8 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.io.FileNotFoundException;
 import java.util.HashSet;
+import java.util.NoSuchElementException;
 import java.util.Set;
 
 import javax.swing.ImageIcon;
@@ -47,7 +47,7 @@ public class ScreenDialog extends JFrame {
 		try {
 			Task task = tasks.getNextTask();
 			setFields(task);
-		} catch (FileNotFoundException e) {
+		} catch (NoSuchElementException e) {
 			JOptionPane.showMessageDialog(this,
 				        "Folder with tasks is empty. You should add some tasks to start application.");
 			System.exit(0);

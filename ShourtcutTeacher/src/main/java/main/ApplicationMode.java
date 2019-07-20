@@ -1,6 +1,8 @@
 package main;
 
-public enum ApplicationMode {
+import propertyLoaders.Configuration;
+
+public enum ApplicationMode implements Configuration{
 	
 	ECLIPSE("eclipse.properties"), FIREFOX("firefox.properties");
 	

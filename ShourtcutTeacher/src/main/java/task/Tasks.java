@@ -1,9 +1,9 @@
 package task;
 
-import java.io.FileNotFoundException;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
 import shortcut.Shortcut;
@@ -20,9 +20,9 @@ public class Tasks {
 		this.iterator = prepareIterator();
 	}
 	
-	public Task getNextTask() throws FileNotFoundException{
+	public Task getNextTask() {
 		if(isLackOfTasks())
-			throw new FileNotFoundException();
+			throw new NoSuchElementException();
 		
 		if (iterator.hasNext())
 			return iterator.next();

@@ -4,15 +4,12 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
-
-import main.ApplicationMode;
-
 import java.util.Properties;
 
-public class PropertyLoader {
+class PropertyLoader {
 	private final Properties prop;
 	
-	PropertyLoader(ApplicationMode applicationMode) {
+	PropertyLoader(Configuration applicationMode) {
 		this.prop = new Properties();
 		try {
 			prop.load(new FileInputStream(applicationMode.getPropertyFileName()));

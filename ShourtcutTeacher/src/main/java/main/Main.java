@@ -1,7 +1,7 @@
 package main;
 import java.awt.EventQueue;
 
-import task.TasksFacade;
+import task.TasksFactory;
 import view.ScreenDialog;
 
 public class Main {
@@ -9,15 +9,15 @@ public class Main {
 	 public static void main(String[] args) {
 	        EventQueue.invokeLater(new Runnable() {
 	            public void run() {
-	            	TasksFacade taskFacade;
+	            	TasksFactory taskFactory;
 	            	
 	            	// 4 possible application configs:
-	            	taskFacade = new TasksFacade(ApplicationConfig.ECLIPSE_READ_FROM_PROPERTIES);
-//	            	taskFacade = new TasksFacade(ApplicationConfig.ECLIPSE_READ_FROM_FILE_NAMES);
-//	            	taskFacade = new TasksFacade(ApplicationConfig.FIREFOX_READ_FROM_FILE_NAMES);
-//	            	taskFacade = new TasksFacade(ApplicationConfig.FIREFOX_READ_FROM_FILE_NAMES);
+	            	taskFactory = new TasksFactory(ApplicationConfig.ECLIPSE_READ_FROM_PROPERTIES);
+//	            	taskFactory = new TasksFactory(ApplicationConfig.ECLIPSE_READ_FROM_FILE_NAMES);
+//	            	taskFactory = new TasksFactory(ApplicationConfig.FIREFOX_READ_FROM_FILE_NAMES);
+//	            	taskFactory = new TasksFactory(ApplicationConfig.FIREFOX_READ_FROM_FILE_NAMES);
 					
-	            	new ScreenDialog(taskFacade.getTasks());
+	            	new ScreenDialog(taskFactory.getTasks());
 	            }
 	        });
 	    }
